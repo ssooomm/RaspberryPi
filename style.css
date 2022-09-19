@@ -1,0 +1,52 @@
+/* 고정메뉴바때문에 body부분이 가려지지 않도록  */
+body {
+  padding-top: 90px;
+}
+#mcp {
+  padding-top: 70px;
+}
+#ultrasonic {
+  padding-top: 70px;
+}
+#htu {
+  padding-top: 70px;
+}
+/* 메뉴바 */
+.title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #99bf9c;
+  padding: 8px 12px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+/* 로고디자인 */
+.title_logo {
+  font-size: 25px;
+  color: white;
+}
+/* 로고옆에 메뉴들어가도록 */
+.menu {
+  display: flex;
+  list-style: none;
+  padding-left: 0;
+}
+/* 메뉴가 일자로 나오도록 */
+.menu li {
+  padding: 8px 12px;
+}
+/* 메뉴에 마우스 올렸을때 색 지정 */
+.menu li:hover {
+  background-color: #d93d59;
+}
+a {
+  text-decoration: none;
+  color: white;
+}
+/* 사진출력될 캔버스 색 지정 */
+#canvasPic {
+  background-color: #d93d59;
+}

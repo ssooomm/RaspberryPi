@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+<head>
+    <title>Veranda Management System</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 페이지 꾸며주는 css연결 -->
+    <link rel="stylesheet" href="./static/style.css"> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js" type="text/javascript"></script>
+    <!-- 메세지 송수신 하는 자바스크립트 -->
+    <script src="./static/mqttio.js" type="text/javascript"></script>
+    <!-- 이미지 그려주는 자바스크립트 -->
+    <script src="./static/image.js" type="text/javascript"></script>
+    <!-- 습도 그래프 나타내는 자바스크립트 -->
+    <script src="./static/humChart.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" type="text/javascript"></script>
+    <script>
+        // ip주소 알아서 읽어와 주기
+        window.addEventListener("load", function () {
+                var url = new String(document.location);
+                ip = (url.split("//"))[1]; 
+                ip = (ip.split(":"))[0]; 
+                document.getElementById("broker").value = ip
+        });
+    </script>
+</head>
+<body>
+    <nav class="title">
+        <div class="title_logo">
+            Veranda Management System
+        </div>
+        <!-- 메뉴바에 있는 글자 클릭으로 페이지의 해당 위치로 옮겨감 -->
+        <ul class="menu">
+            <li><a href="#mcp">조도</a></li> 
+            <li><a href="#htu">온습도</a></li>
+            <li><a href="#ultrasonic">초음파</a></li>
+        </ul>
+    </nav>
+
+    <form id="connection-form">
+        <b>브로커 IP:</b>
+        <input id="broker" type="text" name="broker" value=""><br>
+        <b>포트 번호 : 9001</b><br>
+        <input type="button" onclick="startConnect()" value="Connect">
+        <input type="button" onclick="startDisconnect()" value="Disconnect">
+    </form>
+    <hr>
+    <!-- 조도센서로 거실등 관리 부분 -->
+    <div id="mcp">
+        <h3>조도 센서(토픽:mcp)</h3>
+        <hr>
+        <b>거실등 제어(토픽:led)</b>
+        <form id="LED-control-form">
+            <label>on <input type="radio" name="led" value="1" onchange="publish('led', this.value)"></label>
+            <label>off <input type="radio" name="led" value="0" checked onchange="publish('led', this.value)"><br><br></label>
+        </form>
+    </div>
+    <!-- 습도값으로 그래프 그리는 부분 -->
+    <div id="htu">
+        <h3>HTU21D 센서를 이용한 습도 측정(토픽:hum)</h3>
+        <hr>
+        <form id="subscribe-form">
+            <input type="button" onclick="subscribe('hum')" value="습도측정시작">
+            <input type="button" onclick="unsubscribe('hum')" value="측정중단">
+        </form>
+        <button id="hideshow" onclick="hideshow()">Hide/Show Chart</button>
+        <canvas id="canvas" width="600" height="400"></canvas>
+    </div>
+    <!-- 초음파센서를 보고 이미지 가져오는 부분 -->
+    <div id="ultrasonic">
+    <h3>초음파 센서를 이용한 사진 찍기(토픽:ultrasonic)</h3>
+    <hr>
+    <form id="subscribe-form">
+        <input type="button" onclick="recognize()" value="베란다 사진 찍기">
+    </form><br>
+    <canvas id="myCanvas" width="320" height="240"></canvas>
+    <hr>
+    </div>
+</body>
+</html>
